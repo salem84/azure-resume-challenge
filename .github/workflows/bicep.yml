@@ -21,10 +21,10 @@ jobs:
 
       - name: Install Bicep build
         run: | 
-        curl -Lo bicepinstall https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
-        chmod +x ./bicepinstall
-        sudo mv ./bicepinstall /usr/local/bin/bicep
-        bicep --help
+          curl -Lo bicepinstall https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+          chmod +x ./bicepinstall
+          sudo mv ./bicepinstall /usr/local/bin/bicep
+          bicep --help
        
       - name: Run Bicep build
         run: bicep build ./main.bicep
