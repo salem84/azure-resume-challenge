@@ -1,4 +1,4 @@
-name: ci
+name: azure-bicep
 
 on:
   push:
@@ -19,9 +19,15 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
+      - name: Install Bicep build
+        run: | 
+        curl -Lo bicepinstall https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+        chmod +x ./bicepinstall
+        sudo mv ./bicepinstall /usr/local/bin/bicep
+        bicep --help
+       
       - name: Run Bicep build
-        uses: aliencube/bicep-build-actions@v0.1
-        with:
-          files: '**/*.bicep'
+        run: bicep build ./main.bicep
+
 
       
