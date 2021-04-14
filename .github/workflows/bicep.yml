@@ -27,7 +27,9 @@ jobs:
           bicep --help
        
       - name: Run Bicep build
-        run: bicep build main.bicep
+        run: |_
+          bicep build main.bicep
+          ls -l ./*.json
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
