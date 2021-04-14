@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  generate-arm:
+    runs-on: [ubuntu-latest]
+    defaults:
+      run:
+        working-directory: deploy
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Run Bicep build
+        uses: aliencube/bicep-build-actions@v0.1
+        with:
+          files: '**/*.bicep'
+
+      
