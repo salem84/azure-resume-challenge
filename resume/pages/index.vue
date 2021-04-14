@@ -76,14 +76,19 @@
             >
           </li>
           <li class="nav-item">
-            <div style="position:fixed; bottom:10px; left:10px; z-index:1000;">
+            <div
+              style="position: fixed; bottom: 10px; left: 10px; z-index: 1000"
+            >
               <DarkModeBtn />
             </div>
           </li>
           <li class="nav-item">
-            <div style="position:fixed; bottom:10px; right: 10px;z-index:1000;">
+            <div
+              style="position: fixed; bottom: 10px; right: 10px; z-index: 1000"
+            >
               <nuxt-link class="btn btn-light" :to="switchLocalePath('en')"
-                >EN</nuxt-link>
+                >EN</nuxt-link
+              >
               <!-- <nuxt-link class="btn btn-light" :to="switchLocalePath('it')"
                 >IT</nuxt-link> -->
             </div>
@@ -99,25 +104,25 @@
 </template>
 
 <script>
-import Resume from "@/components/Resume";
-import DarkModeBtn from "@/components/DarkModeBtn";
-import jump from "jump.js";
+import Resume from '@/components/Resume';
+import DarkModeBtn from '@/components/DarkModeBtn';
+import jump from 'jump.js';
 
 export default {
   components: {
     Resume,
-    DarkModeBtn
+    DarkModeBtn,
   },
   head() {
     return {
-      title: "Giorgio Lasala"
+      title: 'Giorgio Lasala',
     };
   },
   methods: {
     jumpTo(element) {
       jump(element);
-    }
-  }
+    },
+  },
 };
 </script>
 

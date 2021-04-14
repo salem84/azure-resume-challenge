@@ -23,22 +23,22 @@ export default {
       darkMode: false,
       colorMode: 'light',
       //colorMode: ["system", "light", "dark"]
-    }
+    };
   },
-  mounted(){
-    this.setLightMode()
+  mounted() {
+    this.setLightMode();
   },
   methods: {
     setDarkMode() {
       this.darkMode = true;
-      this.colorMode = "dark";
+      this.colorMode = 'dark';
       this.$colorMode.preference = this.colorMode;
     },
     setLightMode() {
       this.darkMode = false;
-      this.colorMode = "light";
+      this.colorMode = 'light';
       this.$colorMode.preference = this.colorMode;
-    }
-  }
+    },
+  },
 };
 </script>

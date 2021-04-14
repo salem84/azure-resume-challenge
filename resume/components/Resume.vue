@@ -31,7 +31,7 @@
 <script>
 // import jump from 'jump.js'
 // import Logo from '../components/Logo.vue'
-import Presentation from '../components/Sections/Presentation'
+import Presentation from '../components/Sections/Presentation';
 // import Education from '../components/Sections/Education'
 // import Experience from '../components/Sections/Experience'
 // import Skills from '../components/Sections/Skills'
@@ -49,7 +49,7 @@ export default {
     // Projects,
   },
   methods: {},
-}
+};
 </script>
 
 <style></style>

@@ -1,6 +1,6 @@
 <template>
   <div class="my-auto">
-    <h2 class="mb-5">{{ $t("educationDegrees.title") }}</h2>
+    <h2 class="mb-5">{{ $t('educationDegrees.title') }}</h2>
 
     <div
       v-for="degree in $t('educationDegrees.degrees')"
@@ -23,6 +23,6 @@
 export default {
   data() {
     return {};
-  }
+  },
 };
 </script>
