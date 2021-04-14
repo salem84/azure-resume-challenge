@@ -11,9 +11,9 @@ on:
 jobs:
   generate-arm:
     runs-on: [ubuntu-latest]
-    defaults:
-      run:
-        working-directory: deploy
+    # defaults:
+    #   run:
+    #     working-directory: deploy
 
     steps:
       - name: Checkout 🛎
@@ -28,8 +28,8 @@ jobs:
        
       - name: Run Bicep build
         run: |
-          bicep build main.bicep
-          ls -l ./*.json
+          bicep build deploy/main.bicep
+          ls -l deploy/*.json
 
       # - name: Archive artifacts
       #   uses: actions/upload-artifact@v2
@@ -42,6 +42,6 @@ jobs:
           author_name: github-actions
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'Update Bicep-ARM template'
-          add: '*.js'
+          add: 'deploy/main.js'
 
       
