@@ -27,7 +27,7 @@ jobs:
           bicep --help
        
       - name: Run Bicep build
-        run: |_
+        run: |
           bicep build main.bicep
           ls -l ./*.json
 
