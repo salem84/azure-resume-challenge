@@ -2,6 +2,8 @@ name: azure-bicep
 
 on:
   push:
+    paths:
+      - '**.bicep'
     branches:
       - master
   pull_request:
@@ -25,7 +27,7 @@ jobs:
        
       - name: Run Bicep build
         run: |
-          bicep build deploy/main.bicep
+          bicep build deploy/*.bicep
           ls -l deploy/*.json
 
       - uses: EndBug/add-and-commit@v7.0.0
@@ -33,7 +35,7 @@ jobs:
           author_name: github-actions
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'Update Bicep-ARM template'
-          add: 'deploy/main.json'
+          add: 'deploy/*.json'
 
       # - name: Archive artifacts
       #   uses: actions/upload-artifact@v2
