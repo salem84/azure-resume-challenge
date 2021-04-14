@@ -104,4 +104,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Environment variables
+  env: {
+    functionUrl: process.env.FUNCTION_URL || 'http://www.randomnumberapi.com/api/v1.0/random',
+  },
 };

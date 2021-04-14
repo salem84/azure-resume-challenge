@@ -80,6 +80,7 @@
               style="position: fixed; bottom: 10px; left: 10px; z-index: 1000"
             >
               <DarkModeBtn />
+              <Counter />
             </div>
           </li>
           <li class="nav-item">
@@ -106,12 +107,14 @@
 <script>
 import Resume from '@/components/Resume';
 import DarkModeBtn from '@/components/DarkModeBtn';
+import Counter from '@/components/Counter';
 import jump from 'jump.js';
 
 export default {
   components: {
     Resume,
     DarkModeBtn,
+    Counter,
   },
   head() {
     return {
