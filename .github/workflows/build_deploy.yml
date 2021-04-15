@@ -7,7 +7,7 @@ env:
   AZURE_FUNCTIONAPP_NAME: resume-functions  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'src/ResumeFunction'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.x'              # set this to the dotnet version to use
-
+  STORAGE_ACCOUNT_NAME: 'storageg37rfim3mloo4'
 
 jobs:
   deploy-arm-template:
@@ -22,15 +22,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       
-      - name: Depoy ARM Template
+      - name: Deploy ARM Template
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
           template: ./deploy/main.json
 
+      - name: Azure Logout
+        run: az logout
+
   azure-function:
     runs-on: ubuntu-latest
+    needs: deploy-arm-template
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
@@ -54,3 +58,43 @@ jobs:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
+  nuxt:
+    runs-on: ubuntu-latest
+    needs: deploy-arm-template
+    defaults:
+      run:
+        working-directory: resume
+        
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.2
+        with:
+          check-latest: true
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci
+
+      - name: Build
+        run: npm run generate
+
+      - name: Upload to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+              az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s .
+
+      - name: Azure Logout
+        run: az logout
