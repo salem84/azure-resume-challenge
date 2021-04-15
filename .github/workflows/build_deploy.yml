@@ -61,7 +61,7 @@ jobs:
 
   nuxt:
     runs-on: ubuntu-latest
-    needs: deploy-arm-template
+    #needs: deploy-arm-template
     defaults:
       run:
         working-directory: resume
@@ -99,8 +99,9 @@ jobs:
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
+          azcliversion: 2.0.72
           inlineScript: |
-              az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s .
+            az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s .
 
       - name: Azure Logout
         run: az logout
