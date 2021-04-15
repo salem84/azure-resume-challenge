@@ -65,7 +65,7 @@ jobs:
     defaults:
       run:
         working-directory: resume
-        
+
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
@@ -87,14 +87,16 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run generate
+        run: |
+          npm run generate
+          ls -l dist/*
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           inlineScript: |
-              az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s .
+              az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s dist/*
 
       - name: Azure Logout
         run: az logout
