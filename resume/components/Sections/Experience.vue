@@ -10,12 +10,7 @@
       <div class="resume-content mr-auto">
         <h3 class="mb-0">{{ work.position }}</h3>
         <div class="subheading mb-3">{{ work.companie }}</div>
-        <p
-          v-for="responsabilitie in work.responsabilities"
-          :key="responsabilitie"
-        >
-          - {{ responsabilitie }}
-        </p>
+        <p v-for="responsabilitie in work.responsabilities" :key="responsabilitie">- {{ responsabilitie }}</p>
       </div>
       <div class="resume-date text-md-right">
         <span class="text-primary">{{ work.startEndDate }}</span>
