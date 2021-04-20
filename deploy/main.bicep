@@ -212,3 +212,4 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 output storageAccountName string = storageAccount.name
+output functionAppName string = functionApp.name

@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       storageAccountName: ${{ steps.deploy.outputs.STORAGE_ACCOUNT_NAME }}
+      functionAppName: ${{ steps.deploy.outputs.FUNCTION_APP_NAME }}
     steps:
       
       - name: Azure Login
@@ -41,6 +42,10 @@ jobs:
           storageAccountName=$(echo $deploymentOutput | jq -r .properties.outputs.storageAccountName.value)
           echo "Storage: $storageAccountName"
           echo "::set-output name=STORAGE_ACCOUNT_NAME::${storageAccountName}"
+
+          functionAppName=$(echo $deploymentOutput | jq -r .properties.outputs.functionAppName.value)
+          echo "Function: $functionAppName"
+          echo "::set-output name=FUNCTION_APP_NAME::${functionAppName}"
 
           # Enable static site
           az storage blob service-properties update --account-name $storageAccountName --static-website --404-document 404.html --index-document index.html
@@ -77,7 +82,7 @@ jobs:
 
   nuxt:
     runs-on: ubuntu-latest
-    needs: deploy-arm-template
+    needs: [deploy-arm-template, azure-function]
     defaults:
       run:
         working-directory: resume
@@ -104,6 +109,8 @@ jobs:
 
       - name: Build
         run: |
+          export FUNCTION_URL=${{needs.azure-function.outputs.functionAppName}}
+          echo "Function: $FUNCTION_URL"
           npm run generate
           ls -l dist/*
 
