@@ -3,9 +3,15 @@ param accountName string = toLower('cosmos-${appName}')
 param location string = resourceGroup().location
 param databaseName string = toLower('db-${appName}')
 
-param functionAppName string = toLower('resume-functions')
+param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
+
+param deploymentScriptTimestamp string = utcNow()
+param indexDocument string = 'index.html'
+param errorDocument404Path string = 'error.html'
+
+var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
 
 resource appInsights 'Microsoft.Insights/components@2018-05-01-preview' = {
   name: toLower('appinsights-${appName}')
@@ -22,7 +28,12 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2020-04-01' = {
   name: accountName
   location: location
   properties: {
-    enableFreeTier: true
+    enableFreeTier: false
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ]
     databaseAccountOfferType: 'Standard'
     consistencyPolicy: {
       defaultConsistencyLevel: 'Session'
@@ -59,9 +70,40 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
       }
       keySource: 'Microsoft.Storage'
     }
-    accessTier: 'Hot'
+    accessTier: 'Hot'    
   }
 }
+
+// resource storageAccounts_name_default 'Microsoft.Storage/storageAccounts/blobServices@2021-01-01' = {
+//   name: '${storageAccountName}/default'
+//   properties: {
+//     cors: {
+//       corsRules: [
+//         {
+//           allowedOrigins: [ 
+//             '*' 
+//           ]
+//           allowedMethods: [
+//             'GET'
+//             'OPTIONS'
+//           ]
+//           maxAgeInSeconds: 3000
+//           exposedHeaders: [
+//             '*'
+//           ]
+//           allowedHeaders: [
+//             '*'
+//           ]
+
+//         }
+//       ]
+//     }
+//     deleteRetentionPolicy: {
+//       enabled: false
+//     }
+//   }
+// }
+
 
 resource plan 'Microsoft.Web/serverFarms@2020-06-01' = {
   name: appServicePlanName
@@ -80,6 +122,11 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   properties: {
     serverFarmId: plan.id
     siteConfig: {
+      cors: {
+        allowedOrigins: [
+          '*'
+        ]
+      }
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
@@ -114,3 +161,54 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
 // resource function 'Microsoft.Web/sites/functions@2020-06-01' = {
 //   name: '${functionAppName}/counter'
 // }
+
+// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+//   name: 'DeploymentScript'
+//   location: location
+// }
+
+// resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+//   scope: storageAccount
+//   name: guid(resourceGroup().id, storageAccountContributorRoleDefinitionId)
+//   properties: {
+//     roleDefinitionId: storageAccountContributorRoleDefinitionId
+//     principalId: managedIdentity.properties.principalId
+//   }
+// }
+
+// resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+//   name: 'deploymentScript'
+//   location: location
+//   kind: 'AzurePowerShell'
+//   identity: {
+//     type: 'UserAssigned'
+//     userAssignedIdentities: {
+//       '${managedIdentity.id}': {}
+//     }
+//   }
+//   dependsOn: [
+//     roleAssignment
+//     storageAccount
+//   ]
+//   properties: {
+//     azPowerShellVersion: '3.0'
+//     scriptContent: '''
+// param(
+//     [string] $ResourceGroupName,
+//     [string] $StorageAccountName,
+//     [string] $IndexDocument,
+//     [string] $ErrorDocument404Path)
+// $ErrorActionPreference = 'Stop'
+// $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -AccountName $StorageAccountName
+// $ctx = $storageAccount.Context
+// Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -ErrorDocument404Path $ErrorDocument404Path
+// '''
+//     forceUpdateTag: deploymentScriptTimestamp
+//     retentionInterval: 'PT4H'
+//     arguments: '-ResourceGroupName ${resourceGroup().name} -StorageAccountName ${accountName} -IndexDocument ${indexDocument} -ErrorDocument404Path ${errorDocument404Path}'
+//   }
+// }
+
+// output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
+// output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+output storageAccountName string = storageAccount.name

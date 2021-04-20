@@ -22,12 +22,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       
-      - name: Deploy ARM Template
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
-          template: ./deploy/main.json
+      # - name: Deploy ARM Template
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
+      #     template: ./deploy/main.json
+
+      - name: Deploy BICEP template
+        shell: bash
+        run: |
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          deploymentOutput =$(az deployment group create --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }} --template-file ./deploy/main.bicep)
+
+          storageAccountName = $(echo $deploymentOutput | jq .properties.outputs.storageAccountName.value)
+          echo "Storage: $storageAccountName"
+
+          # Enable static site
+          az storage blob service-properties update --account-name $storageAccountName --static-website --404-document 404.html --index-document index.html
 
       - name: Azure Logout
         run: az logout
