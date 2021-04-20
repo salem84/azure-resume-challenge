@@ -82,7 +82,7 @@ jobs:
 
   nuxt:
     runs-on: ubuntu-latest
-    needs: [deploy-arm-template, azure-function]
+    needs: [deploy-arm-template]
     defaults:
       run:
         working-directory: resume
@@ -109,7 +109,7 @@ jobs:
 
       - name: Build
         run: |
-          export FUNCTION_URL=${{needs.azure-function.outputs.functionAppName}}
+          export FUNCTION_URL=${{needs.deploy-arm-template.outputs.functionAppName}}
           echo "Function: $FUNCTION_URL"
           npm run generate
           ls -l dist/*
