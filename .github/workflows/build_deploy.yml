@@ -7,11 +7,13 @@ env:
   AZURE_FUNCTIONAPP_NAME: resume-functions  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'src/ResumeFunction'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.x'              # set this to the dotnet version to use
-  STORAGE_ACCOUNT_NAME: 'storageg37rfim3mloo4'
+  #STORAGE_ACCOUNT_NAME: 'storageg37rfim3mloo4'
 
 jobs:
   deploy-arm-template:
     runs-on: ubuntu-latest
+    outputs:
+      storageAccountName: ${{ steps.deploy.outputs.STORAGE_ACCOUNT_NAME }}
     steps:
       
       - name: Azure Login
@@ -30,13 +32,15 @@ jobs:
       #     template: ./deploy/main.json
 
       - name: Deploy BICEP template
+        id: deploy
         shell: bash
         run: |
           az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           deploymentOutput=$(az deployment group create --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }} --template-file ./deploy/main.bicep)
 
-          storageAccountName=$(echo $deploymentOutput | jq .properties.outputs.storageAccountName.value)
+          storageAccountName=$(echo $deploymentOutput | jq -r .properties.outputs.storageAccountName.value)
           echo "Storage: $storageAccountName"
+          echo "::set-output name=STORAGE_ACCOUNT_NAME::${storageAccountName}"
 
           # Enable static site
           az storage blob service-properties update --account-name $storageAccountName --static-website --404-document 404.html --index-document index.html
@@ -114,7 +118,8 @@ jobs:
           # Be careful of azcliversion
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT_NAME }} -d '$web' -s './resume/dist'
+            echo "Deploy to StorageAccount..."
+            az storage blob upload-batch --account-name ${{needs.deploy-arm-template.outputs.storageAccountName}} -d '$web' -s './resume/dist'
 
       - name: Azure Logout
         run: az logout
