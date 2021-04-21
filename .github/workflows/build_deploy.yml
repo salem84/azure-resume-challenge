@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   AZURE_RESOURCEGROUP_NAME: RG_ACGResume
-  AZURE_FUNCTIONAPP_NAME: resume-functions  # set this to your application's name
+  #AZURE_FUNCTIONAPP_NAME: resume-functions  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'src/ResumeFunction'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.x'              # set this to the dotnet version to use
   #STORAGE_ACCOUNT_NAME: 'storageg37rfim3mloo4'
@@ -15,6 +15,7 @@ jobs:
     outputs:
       storageAccountName: ${{ steps.deploy.outputs.STORAGE_ACCOUNT_NAME }}
       functionAppName: ${{ steps.deploy.outputs.FUNCTION_APP_NAME }}
+      publishProfile: ${{ steps.deploy.outputs.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
     steps:
       
       - name: Azure Login
@@ -47,6 +48,10 @@ jobs:
           echo "Function: $functionAppName"
           echo "::set-output name=FUNCTION_APP_NAME::${functionAppName}"
 
+          echo "Get Function Publish Profile"
+          publishProfile=$(az webapp deployment list-publishing-profiles --name ${functionAppName} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }} --xml)
+          echo "::set-output name=AZURE_FUNCTIONAPP_PUBLISH_PROFILE::${publishProfile}"
+
           # Enable static site
           az storage blob service-properties update --account-name $storageAccountName --static-website --404-document 404.html --index-document index.html
 
@@ -76,9 +81,9 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          app-name: ${{ needs.deploy-arm-template.outputs.functionAppName }}
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ needs.deploy-arm-template.outputs.publishProfile }}
 
   nuxt:
     runs-on: ubuntu-latest
@@ -109,8 +114,8 @@ jobs:
 
       - name: Build
         run: |
-          export FUNCTION_URL=${{needs.deploy-arm-template.outputs.functionAppName}}
-          echo "Function: $FUNCTION_URL"
+          export FUNCTION_BASE_URL=${{needs.deploy-arm-template.outputs.functionAppName}}
+          echo "Function: $FUNCTION_BASE_URL"
           npm run generate
           ls -l dist/*
 
