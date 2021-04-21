@@ -14,7 +14,8 @@
     "core-js": "^3.9.1",
     "jump.js": "^1.0.2",
     "nuxt": "^2.15.3",
-    "nuxt-i18n": "^6.24.0"
+    "nuxt-i18n": "^6.24.0",
+    "vue-typer": "^1.2.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",
@@ -36,6 +37,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,md}": ["prettier --write"]
+    "*.{js,md}": [
+      "prettier --write"
+    ]
   }
 }
