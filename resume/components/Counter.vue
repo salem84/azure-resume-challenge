@@ -1,7 +1,7 @@
 <template>
   <div class="counter">
     <template v-if="$fetchState.pending">
-      <span>Welcome</span>
+      <span>{{ message }}</span>
     </template>
     <template v-else>
       <span>{{ users }}</span>
@@ -13,6 +13,7 @@
 export default {
   data() {
     return {
+      message: 'Welcome',
       users: '',
     };
   },
