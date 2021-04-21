@@ -18,7 +18,8 @@ export default {
     };
   },
   async fetch() {
-    this.users = await fetch(process.env.functionUrl).then((res) => res.text());
+    let url = `${process.env.functionBaseUrl}/api/counter`;
+    this.users = await fetch(url).then((res) => res.text());
   },
   fetchOnServer: false,
 };
