@@ -100,6 +100,8 @@ export default {
 
   // Environment variables
   env: {
-    functionUrl: process.env.FUNCTION_URL || 'http://www.randomnumberapi.com/api/v1.0/random',
+    functionUrl:
+      process.env.FUNCTION_URL ||
+      'https://resume-functions.azurewebsites.net/api/counter?code=Fuyta5Na79JJQOBpBBRbpAW9WVmjaQvyrJ9TmBoo9ay1aHNR0yuYZA==',
   },
 };
