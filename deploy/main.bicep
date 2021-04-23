@@ -1,7 +1,8 @@
 param appName string = uniqueString(resourceGroup().id)
 param accountName string = toLower('cosmos-${appName}')
 param location string = resourceGroup().location
-param databaseName string = toLower('db-${appName}')
+param databaseName string = toLower('stats')
+param containerName string = toLower('counters')
 
 param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
@@ -46,6 +47,28 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2020-04-01' = {
   }
 }
 
+resource cosmosdb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2020-04-01' = {
+  name: '${cosmos.name}/${databaseName}'
+  properties: {
+    resource: {
+      id: databaseName
+    }
+    options: {
+    }
+  }
+}
+
+resource cosmoscontainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2020-04-01' = {
+  name: '${cosmos.name}/${databaseName}/${containerName}'
+  properties: {
+    resource: {
+      id: containerName
+    }
+    options: {
+      
+    }
+  }
+}
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: storageAccountName
@@ -73,37 +96,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
     accessTier: 'Hot'    
   }
 }
-
-// resource storageAccounts_name_default 'Microsoft.Storage/storageAccounts/blobServices@2021-01-01' = {
-//   name: '${storageAccountName}/default'
-//   properties: {
-//     cors: {
-//       corsRules: [
-//         {
-//           allowedOrigins: [ 
-//             '*' 
-//           ]
-//           allowedMethods: [
-//             'GET'
-//             'OPTIONS'
-//           ]
-//           maxAgeInSeconds: 3000
-//           exposedHeaders: [
-//             '*'
-//           ]
-//           allowedHeaders: [
-//             '*'
-//           ]
-
-//         }
-//       ]
-//     }
-//     deleteRetentionPolicy: {
-//       enabled: false
-//     }
-//   }
-// }
-
 
 resource plan 'Microsoft.Web/serverFarms@2020-06-01' = {
   name: appServicePlanName
