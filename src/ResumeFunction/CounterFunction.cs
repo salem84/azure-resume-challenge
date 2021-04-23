@@ -19,8 +19,8 @@ namespace CounterFunction
         [FunctionName("counter")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            [CosmosDB("Stats", "Counters", Id = "id", ConnectionStringSetting = "CosmosDb")] IAsyncCollector<CounterStatsItem> counterItemsOut,
-            [CosmosDB("Stats", "Counters", ConnectionStringSetting = "CosmosDb")] DocumentClient client,
+            [CosmosDB("stats", "counters", Id = "id", ConnectionStringSetting = "CosmosDb")] IAsyncCollector<CounterStatsItem> counterItemsOut,
+            [CosmosDB("stats", "counters", ConnectionStringSetting = "CosmosDb")] DocumentClient client,
             ILogger log)
         {
             log.LogInformation("Arrived counter request");
