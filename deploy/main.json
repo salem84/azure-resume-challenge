@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "11053418941517121357"
+      "templateHash": "18196924625367877043"
     }
   },
   "parameters": {
@@ -23,7 +23,11 @@
     },
     "databaseName": {
       "type": "string",
-      "defaultValue": "[toLower(format('db-{0}', parameters('appName')))]"
+      "defaultValue": "[toLower('stats')]"
+    },
+    "containerName": {
+      "type": "string",
+      "defaultValue": "[toLower('counters')]"
     },
     "functionAppName": {
       "type": "string",
@@ -89,6 +93,34 @@
           }
         ]
       }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2020-04-01",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('databaseName'))]",
+      "properties": {
+        "resource": {
+          "id": "[parameters('databaseName')]"
+        },
+        "options": {}
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2020-04-01",
+      "name": "[format('{0}/{1}/{2}', parameters('accountName'), parameters('databaseName'), parameters('containerName'))]",
+      "properties": {
+        "resource": {
+          "id": "[parameters('containerName')]"
+        },
+        "options": {}
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]"
+      ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
