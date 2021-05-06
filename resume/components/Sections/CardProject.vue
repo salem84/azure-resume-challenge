@@ -14,7 +14,8 @@
 
 <script>
 export default {
-  props: ['projectInfo'],
+  // eslint-disable-next-line vue/require-prop-types
+  // props: ['projectInfo'],
   data() {
     return {};
   },

@@ -3,9 +3,9 @@
     <h2 class="mb-5">{{ $t('projects.title') }}</h2>
 
     <CardProject
-      :projectInfo="project"
       v-for="project in $t('projects.projectsInfo')"
       :key="project.name"
+      :project-info="project"
       class="mb-5"
     />
   </div>
