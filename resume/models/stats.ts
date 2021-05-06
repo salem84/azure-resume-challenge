@@ -1,3 +1,3 @@
 export interface Stats {
-  totalCount: number
+  totalCount: number;
 }
