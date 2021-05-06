@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "18196924625367877043"
+      "templateHash": "14164750724311201858"
     }
   },
   "parameters": {
@@ -40,6 +40,14 @@
     "storageAccountName": {
       "type": "string",
       "defaultValue": "[toLower(format('storage{0}', parameters('appName')))]"
+    },
+    "endpointName": {
+      "type": "string",
+      "defaultValue": "[toLower(format('endpoint-{0}', parameters('appName')))]"
+    },
+    "cdnProfileName": {
+      "type": "string",
+      "defaultValue": "[toLower(format('cdnProfile-{0}', parameters('appName')))]"
     },
     "deploymentScriptTimestamp": {
       "type": "string",
@@ -209,6 +217,46 @@
         "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
       ]
+    },
+    {
+      "type": "Microsoft.Cdn/profiles",
+      "apiVersion": "2020-04-15",
+      "name": "[parameters('cdnProfileName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_Akamai"
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/endpoints",
+      "apiVersion": "2020-04-15",
+      "name": "[parameters('endpointName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "originHostHeader": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.web, 'https://', ''), '/', '')]",
+        "isHttpAllowed": false,
+        "isHttpsAllowed": true,
+        "queryStringCachingBehavior": "IgnoreQueryString",
+        "contentTypesToCompress": [
+          "text/plain",
+          "text/html",
+          "text/css",
+          "application/x-javascript",
+          "text/javascript"
+        ],
+        "isCompressionEnabled": true,
+        "origins": [
+          {
+            "name": "webstorageorigin",
+            "properties": {
+              "hostName": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.web, 'https://', ''), '/', '')]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
     }
   ],
   "outputs": {
@@ -219,6 +267,14 @@
     "functionAppName": {
       "type": "string",
       "value": "[parameters('functionAppName')]"
+    },
+    "hostName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).hostName]"
+    },
+    "originHostHeader": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).originHostHeader]"
     }
   }
 }
