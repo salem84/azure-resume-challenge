@@ -1,6 +1,6 @@
 <template>
   <section>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <nav id="sideNav" class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Resume Giorgio Lasala</span>
         <span class="d-none d-lg-block">
@@ -18,27 +18,27 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#about')" href="#">{{ $t('links.about') }}</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#about')">{{ $t('links.about') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#education')" href="#">{{ $t('links.education') }}</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#education')">{{ $t('links.education') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#experience')" href="#">{{
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#experience')">{{
               $t('links.experience')
             }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#skills')" href="#">{{ $t('links.skills') }}</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#skills')">{{ $t('links.skills') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#interests')" href="#">{{ $t('links.interests') }}</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#interests')">{{ $t('links.interests') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" @click="jumpTo('#projects')" href="#">{{ $t('links.projects') }}</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="jumpTo('#projects')">{{ $t('links.projects') }}</a>
           </li>
           <li class="nav-item">
             <div style="position: fixed; bottom: 10px; left: 10px; z-index: 1000">

@@ -1,3 +1,3 @@
-export default interface Stats {
+export interface Stats {
   totalCount: number
 }

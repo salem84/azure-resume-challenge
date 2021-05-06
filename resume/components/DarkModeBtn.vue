@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i v-if="!this.darkMode" style="font-size: 35px; color: white" class="fas fa-sun btn" @click="setDarkMode"></i>
+    <i v-if="!darkMode" style="font-size: 35px; color: white" class="fas fa-sun btn" @click="setDarkMode"></i>
     <i v-else style="font-size: 35px" class="fas fa-moon btn" @click="setLightMode"></i>
   </div>
 </template>
