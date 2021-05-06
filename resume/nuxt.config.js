@@ -78,6 +78,7 @@ export default {
     ],
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    '@nuxtjs/toast',
   ],
 
   i18n: {

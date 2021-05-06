@@ -4,24 +4,24 @@
       <section id="about" class="resume-section p-3 p-lg-5 d-flex d-column">
         <Presentation />
       </section>
-      <!--
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
+
+      <section id="education" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Education />
       </section>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
+      <section id="experience" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Experience />
       </section>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
+      <section id="skills" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Skills />
       </section>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="interests">
+      <!-- <section id="interests" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Interests />
-      </section>
+      </section> -->
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="projects">
+      <!-- <section id="projects" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Projects />
       </section> -->
     </div>
@@ -32,9 +32,9 @@
 // import jump from 'jump.js'
 // import Logo from '../components/Logo.vue'
 import Presentation from '../components/Sections/Presentation';
-// import Education from '../components/Sections/Education'
-// import Experience from '../components/Sections/Experience'
-// import Skills from '../components/Sections/Skills'
+import Education from '../components/Sections/Education';
+import Experience from '../components/Sections/Experience';
+import Skills from '../components/Sections/Skills';
 // import Interests from '../components/Sections/Interests'
 // import Projects from '../components/Sections/Projects'
 
@@ -42,9 +42,9 @@ export default {
   components: {
     // Logo,
     Presentation,
-    // Experience,
-    // Education,
-    // Skills,
+    Experience,
+    Education,
+    Skills,
     // Interests,
     // Projects,
   },
