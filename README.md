@@ -3,7 +3,22 @@
 # Azure Resume Challenge
 #### 'A Cloud Guru' challenge
 
-TBD
+## Infrastructure as Code
+In order to manage Azure infrastructure resources, I have used a template based on Bicep, that provides a transparent abstraction of Azure Resource Manager (ARM) template.
+In our specific usecase, Bicep template is composed of following resources:
+* CosmosDb (Account, database, container)
+* Storage Account 
+* Function with Consumption Plan
+* Application Insights
+
+A Bicep template could be easily deployed to an Azure Resource Group using Azure CLI 
+
+```
+az deployment group create --resource-group AZURE_RESOURCEGROUP_NAME --template-file BICEP_TEMPLATE
+```
+
+
+Unfortunately some configuration cannot be 
 
 ## Resume
 Based on beautiful resume template developed by [Ivan Greve](https://github.com/ivangreve/nuxt-resume)
