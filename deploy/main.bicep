@@ -7,6 +7,8 @@ param containerName string = toLower('counters')
 param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
+param endpointName string = toLower('endpoint-${appName}')
+param cdnProfileName string = toLower('cdnProfile-${appName}')
 
 param deploymentScriptTimestamp string = utcNow()
 param indexDocument string = 'index.html'
@@ -201,7 +203,46 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
 //   }
 // }
 
+resource cdnProfile 'Microsoft.Cdn/profiles@2020-04-15' = {
+  location: location
+  name: cdnProfileName
+  sku: {
+    name: 'Standard_Akamai'
+  }
+}
+
+var storageAccountHostNameWeb = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+
+resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-04-15' = {
+  location: location
+  name: endpointName
+  properties: {
+    originHostHeader: storageAccountHostNameWeb
+    isHttpAllowed: false
+    isHttpsAllowed: true
+    queryStringCachingBehavior: 'IgnoreQueryString'
+    contentTypesToCompress: [
+      'text/plain'
+      'text/html'
+      'text/css'
+      'application/x-javascript'
+      'text/javascript'
+    ]
+    isCompressionEnabled: true
+    origins: [
+      {
+        name: 'webstorageorigin'
+        properties: {
+          hostName: storageAccountHostNameWeb
+        }
+      }
+    ]
+  }
+}
+
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 output storageAccountName string = storageAccount.name
 output functionAppName string = functionApp.name
+output hostName string = endpoint.properties.hostName
+output originHostHeader string = endpoint.properties.originHostHeader
