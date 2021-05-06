@@ -7,8 +7,8 @@ param containerName string = toLower('counters')
 param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
-param endpointName string = toLower('endpoint-${appName}')
 param cdnProfileName string = toLower('cdnProfile-${appName}')
+param endpointName string = concat(cdnProfileName, '/', toLower('endpoint-${appName}'))
 
 param deploymentScriptTimestamp string = utcNow()
 param indexDocument string = 'index.html'
@@ -51,6 +51,9 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2020-04-01' = {
 
 resource cosmosdb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2020-04-01' = {
   name: '${cosmos.name}/${databaseName}'
+  dependsOn: [
+    cosmos
+  ]
   properties: {
     resource: {
       id: databaseName
@@ -62,6 +65,9 @@ resource cosmosdb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2020-04-01
 
 resource cosmoscontainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2020-04-01' = {
   name: '${cosmos.name}/${databaseName}/${containerName}'
+  dependsOn: [
+    cosmosdb
+  ]
   properties: {
     resource: {
       id: containerName
@@ -203,7 +209,7 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
 //   }
 // }
 
-resource cdnProfile 'Microsoft.Cdn/profiles@2020-04-15' = {
+resource cdnProfile 'Microsoft.Cdn/profiles@2020-09-01' = {
   location: location
   name: cdnProfileName
   sku: {
@@ -213,8 +219,12 @@ resource cdnProfile 'Microsoft.Cdn/profiles@2020-04-15' = {
 
 var storageAccountHostNameWeb = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 
-resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-04-15' = {
+resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   location: location
+  dependsOn: [
+    storageAccount
+    cdnProfile
+  ]
   name: endpointName
   properties: {
     originHostHeader: storageAccountHostNameWeb
