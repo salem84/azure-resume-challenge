@@ -48,14 +48,18 @@ namespace CounterFunction
                 QueryText = "SELECT VALUE COUNT(1) FROM Counters",
             });
 
-            string totalCount = "";
+            var stats = new Stats();
             foreach (dynamic res in query)
             {
-                totalCount = res;
+                stats.TotalCount = res;
             }
-            return new OkObjectResult($"OK-{totalCount}");
-
+            return new OkObjectResult(stats);
 
         }
+    }
+
+    public class Stats 
+    {
+        public int TotalCount { get; set; }
     }
 }
