@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "14175812788873228223"
+      "templateHash": "15438849927735746077"
     }
   },
   "parameters": {
@@ -47,7 +47,11 @@
     },
     "endpointName": {
       "type": "string",
-      "defaultValue": "[concat(parameters('cdnProfileName'), '/', toLower(format('endpoint-{0}', parameters('appName'))))]"
+      "defaultValue": "[toLower(format('endpoint-{0}', parameters('appName')))]"
+    },
+    "endpointCompleteName": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('cdnProfileName'), '/', parameters('endpointName'))]"
     },
     "deploymentScriptTimestamp": {
       "type": "string",
@@ -231,11 +235,11 @@
     {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2020-09-01",
-      "name": "[parameters('endpointName')]",
+      "name": "[parameters('endpointCompleteName')]",
       "location": "[parameters('location')]",
       "properties": {
         "originHostHeader": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.web, 'https://', ''), '/', '')]",
-        "isHttpAllowed": false,
+        "isHttpAllowed": true,
         "isHttpsAllowed": true,
         "queryStringCachingBehavior": "IgnoreQueryString",
         "contentTypesToCompress": [
@@ -272,7 +276,7 @@
     },
     "functionUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName'))).defaultHostName]"
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', parameters('functionAppName'))).defaultHostName)]"
     },
     "cdnProfileName": {
       "type": "string",
@@ -280,11 +284,11 @@
     },
     "cdnEndpointHostName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).hostName]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointCompleteName'), '/')[0], split(parameters('endpointCompleteName'), '/')[1])).hostName]"
     },
     "originHostHeader": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).originHostHeader]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointCompleteName'), '/')[0], split(parameters('endpointCompleteName'), '/')[1])).originHostHeader]"
     },
     "cdnEndpointName": {
       "type": "string",
