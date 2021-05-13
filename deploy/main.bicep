@@ -119,6 +119,9 @@ resource plan 'Microsoft.Web/serverFarms@2020-06-01' = {
 resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   name: functionAppName
   location: location
+  dependsOn: [
+    cosmos
+  ]
   kind: 'functionapp'
   properties: {
     serverFarmId: plan.id
@@ -152,6 +155,10 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
           value: '~3'
+        }
+        {
+          name: 'ConnectionStrings:CosmosDb'
+          value: listConnectionStrings(cosmos.id, '2020-04-01').connectionStrings[0].connectionString
         }
       ]
     }
