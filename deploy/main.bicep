@@ -253,6 +253,6 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 output storageAccountName string = storageAccount.name
-output functionAppName string = functionApp.name
+output functionUrl string = functionApp.properties.defaultHostName
 output hostName string = endpoint.properties.hostName
 output originHostHeader string = endpoint.properties.originHostHeader
