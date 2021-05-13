@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "5794666294537732066"
+      "templateHash": "17390494840079318216"
     }
   },
   "parameters": {
@@ -266,9 +266,9 @@
       "type": "string",
       "value": "[parameters('storageAccountName')]"
     },
-    "functionAppName": {
+    "functionUrl": {
       "type": "string",
-      "value": "[parameters('functionAppName')]"
+      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName'))).defaultHostName]"
     },
     "hostName": {
       "type": "string",
