@@ -45,8 +45,12 @@ jobs:
           echo "::set-output name=STORAGE_ACCOUNT_NAME::${storageAccountName}"
 
           functionAppName=$(echo $deploymentOutput | jq -r .properties.outputs.functionAppName.value)
-          echo "Function: $functionAppName"
+          echo "Function Name: $functionAppName"
           echo "::set-output name=FUNCTION_APP_NAME::${functionAppName}"
+
+          functionUrl=$(echo $deploymentOutput | jq -r .properties.outputs.functionUrl.value)
+          echo "Function Url: $functionUrl"
+          echo "::set-output name=FUNCTION_URL::${functionUrl}"
 
           echo "Get Function Publish Profile"
           publishProfile=$(az webapp deployment list-publishing-profiles --name ${functionAppName} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }} --xml)
