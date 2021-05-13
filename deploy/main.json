@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "15438849927735746077"
+      "templateHash": "18149973462943458423"
     }
   },
   "parameters": {
@@ -212,6 +212,10 @@
             {
               "name": "FUNCTIONS_EXTENSION_VERSION",
               "value": "~3"
+            },
+            {
+              "name": "ConnectionStrings:CosmosDb",
+              "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName')), '2020-04-01').connectionStrings[0].connectionString]"
             }
           ]
         },
@@ -219,6 +223,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Insights/components', toLower(format('appinsights-{0}', parameters('appName'))))]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]",
         "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
       ]
