@@ -258,3 +258,4 @@ output functionUrl string = functionApp.properties.defaultHostName
 output cdnProfileName string = cdnProfile.name
 output cdnEndpointHostName string = endpoint.properties.hostName
 output originHostHeader string = endpoint.properties.originHostHeader
+output cdnEndpointName string = endpoint.name

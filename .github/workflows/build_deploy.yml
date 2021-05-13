@@ -18,7 +18,7 @@ jobs:
       functionUrl: ${{ steps.deploy.outputs.FUNCTION_URL }}
       publishProfile: ${{ steps.deploy.outputs.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
       cdnProfileName: ${{ steps.deploy.outputs.CDN_PROFILE_NAME }}
-      cdnEndpointHostName: ${{ steps.deploy.outputs.CDN_ENDPOINT_HOSTNAME }}
+      cdnEndpointName: ${{ steps.deploy.outputs.CDN_ENDPOINT_HOSTNAME }}
 
     steps:
       
@@ -64,9 +64,9 @@ jobs:
           echo "CDN Profile Name: $cdnProfileName"
           echo "::set-output name=CDN_PROFILE_NAME::${cdnProfileName}"
 
-          cdnEndpointHostName=$(echo $deploymentOutput | jq -r .properties.outputs.cdnEndpointHostName.value)
-          echo "CDN Endpoint HostName: $cdnEndpointHostName"
-          echo "::set-output name=CDN_ENDPOINT_HOSTNAME::${cdnEndpointHostName}"
+          cdnEndpointName=$(echo $deploymentOutput | jq -r .properties.outputs.cdnEndpointName.value)
+          echo "CDN Endpoint Name: $cdnEndpointName"
+          echo "::set-output name=CDN_ENDPOINT_HOSTNAME::${cdnEndpointName}"
 
           # Enable static site
           az storage blob service-properties update --account-name $storageAccountName --static-website --404-document 404.html --index-document index.html
@@ -154,7 +154,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name ${{needs.deploy-arm-template.outputs.cdnProfileName}} --name ${{needs.deploy-arm-template.outputs.cdnEndpointHostName}} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }}
+            az cdn endpoint purge --content-paths  "/*" --profile-name ${{needs.deploy-arm-template.outputs.cdnProfileName}} --name ${{needs.deploy-arm-template.outputs.cdnEndpointName}} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }}
 
 
       - name: Azure Logout
