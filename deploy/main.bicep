@@ -8,7 +8,8 @@ param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
 param cdnProfileName string = toLower('cdnProfile-${appName}')
-param endpointName string = concat(cdnProfileName, '/', toLower('endpoint-${appName}'))
+param endpointName string = toLower('endpoint-${appName}')
+param endpointCompleteName string = concat(cdnProfileName, '/', endpointName)
 
 param deploymentScriptTimestamp string = utcNow()
 param indexDocument string = 'index.html'
@@ -225,10 +226,10 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
     storageAccount
     cdnProfile
   ]
-  name: endpointName
+  name: endpointCompleteName
   properties: {
     originHostHeader: storageAccountHostNameWeb
-    isHttpAllowed: false
+    isHttpAllowed: true
     isHttpsAllowed: true
     queryStringCachingBehavior: 'IgnoreQueryString'
     contentTypesToCompress: [
@@ -254,8 +255,8 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 output storageAccountName string = storageAccount.name
 output functionAppName string = functionApp.name
-output functionUrl string = functionApp.properties.defaultHostName
+output functionUrl string = concat('https://', functionApp.properties.defaultHostName)
 output cdnProfileName string = cdnProfile.name
 output cdnEndpointHostName string = endpoint.properties.hostName
 output originHostHeader string = endpoint.properties.originHostHeader
-output cdnEndpointName string = endpoint.name
+output cdnEndpointName string = endpointName
