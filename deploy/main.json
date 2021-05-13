@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "16004299381200544755"
+      "templateHash": "14175812788873228223"
     }
   },
   "parameters": {
@@ -285,6 +285,10 @@
     "originHostHeader": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).originHostHeader]"
+    },
+    "cdnEndpointName": {
+      "type": "string",
+      "value": "[parameters('endpointName')]"
     }
   }
 }
