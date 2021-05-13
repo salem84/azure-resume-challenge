@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "612775521053208677"
+      "templateHash": "16004299381200544755"
     }
   },
   "parameters": {
@@ -274,7 +274,11 @@
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName'))).defaultHostName]"
     },
-    "hostName": {
+    "cdnProfileName": {
+      "type": "string",
+      "value": "[parameters('cdnProfileName')]"
+    },
+    "cdnEndpointHostName": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointName'), '/')[0], split(parameters('endpointName'), '/')[1])).hostName]"
     },
