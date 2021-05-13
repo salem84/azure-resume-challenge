@@ -255,5 +255,6 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
 output storageAccountName string = storageAccount.name
 output functionAppName string = functionApp.name
 output functionUrl string = functionApp.properties.defaultHostName
-output hostName string = endpoint.properties.hostName
+output cdnProfileName string = cdnProfile.name
+output cdnEndpointHostName string = endpoint.properties.hostName
 output originHostHeader string = endpoint.properties.originHostHeader
