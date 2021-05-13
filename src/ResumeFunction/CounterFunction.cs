@@ -16,11 +16,14 @@ namespace CounterFunction
 {
     public static class CounterFunction
     {
+        private const string DATABASE_NAME = "stats";
+        private const string COLLECTION_NAME = "counters";
+
         [FunctionName("counter")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            [CosmosDB("stats", "counters", Id = "id", ConnectionStringSetting = "CosmosDb")] IAsyncCollector<CounterStatsItem> counterItemsOut,
-            [CosmosDB("stats", "counters", ConnectionStringSetting = "CosmosDb")] DocumentClient client,
+            [CosmosDB(DATABASE_NAME, COLLECTION_NAME, Id = "id", ConnectionStringSetting = "CosmosDb")] IAsyncCollector<CounterStatsItem> counterItemsOut,
+            [CosmosDB(DATABASE_NAME, COLLECTION_NAME, ConnectionStringSetting = "CosmosDb")] DocumentClient client,
             ILogger log)
         {
             log.LogInformation("Arrived counter request");
@@ -42,7 +45,7 @@ namespace CounterFunction
                 
             });
 
-            var collectionUri = UriFactory.CreateDocumentCollectionUri("Stats", "Counters");
+            var collectionUri = UriFactory.CreateDocumentCollectionUri(DATABASE_NAME, COLLECTION_NAME);
             var query = client.CreateDocumentQuery<dynamic>(collectionUri, new SqlQuerySpec()
             {
                 QueryText = "SELECT VALUE COUNT(1) FROM Counters",
