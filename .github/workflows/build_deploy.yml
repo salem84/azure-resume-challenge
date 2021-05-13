@@ -77,7 +77,7 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
 
-      - name: 'Run Azure Functions Action'
+      - name: 'Deploy Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
@@ -114,7 +114,7 @@ jobs:
 
       - name: Build
         run: |
-          export FUNCTION_BASE_URL=${{needs.deploy-arm-template.outputs.functionAppName}}
+          export FUNCTION_BASE_URL=${{needs.deploy-arm-template.outputs.functionUrl}}
           echo "Function: $FUNCTION_BASE_URL"
           npm run generate
           ls -l dist/*
