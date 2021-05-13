@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "17390494840079318216"
+      "templateHash": "612775521053208677"
     }
   },
   "parameters": {
@@ -265,6 +265,10 @@
     "storageAccountName": {
       "type": "string",
       "value": "[parameters('storageAccountName')]"
+    },
+    "functionAppName": {
+      "type": "string",
+      "value": "[parameters('functionAppName')]"
     },
     "functionUrl": {
       "type": "string",
