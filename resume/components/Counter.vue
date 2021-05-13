@@ -20,10 +20,13 @@ export default {
     };
   },
   async fetch() {
-    this.$toast.show('Welcome!!');
+    this.$toast.show('Hi guy, welcome on my Azure Challenge Resume site!!');
     let url = `${process.env.functionBaseUrl}/api/counter`;
     this.users = await fetch(url).then((res) => res.json());
-    this.$toast.success(`You are ${this.users.totalCount}`);
+
+    setTimeout(function () {
+      this.$toast.success(`This CV has been visited ${this.users.totalCount} times!`);
+    }, 2000);
   },
   fetchOnServer: false,
 };
