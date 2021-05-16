@@ -30,10 +30,15 @@ export default {
         type: 'text/css',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css',
       },
+      // {
+      //   rel: 'stylesheet',
+      //   type: 'text/css',
+      //   href: 'https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css',
+      // },
       {
         rel: 'stylesheet',
         type: 'text/css',
-        href: 'https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css',
+        href: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css',
       },
       {
         rel: 'stylesheet',
