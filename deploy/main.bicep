@@ -8,7 +8,7 @@ param functionAppName string = toLower('resume-functions-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
 param cdnProfileName string = toLower('cdnProfile-${appName}')
-param endpointName string = toLower('endpoint-${appName}')
+param endpointName string = toLower('resume${appName}')
 param endpointCompleteName string = concat(cdnProfileName, '/', endpointName)
 
 param deploymentScriptTimestamp string = utcNow()
@@ -243,15 +243,20 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
       'text/plain'
       'text/html'
       'text/css'
-      'application/x-javascript'
       'text/javascript'
+      'application/x-javascript'
+      'application/javascript'
+      'application/json'
+      'application/xml'
     ]
     isCompressionEnabled: true
+    optimizationType: 'GeneralWebDelivery'
     origins: [
       {
         name: 'webstorageorigin'
         properties: {
           hostName: storageAccountHostNameWeb
+          enabled: true
         }
       }
     ]

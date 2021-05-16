@@ -10,7 +10,7 @@ env:
   #STORAGE_ACCOUNT_NAME: 'storageg37rfim3mloo4'
 
 jobs:
-  deploy-arm-template:
+  deploy-azure-template:
     runs-on: ubuntu-latest
     outputs:
       storageAccountName: ${{ steps.deploy.outputs.STORAGE_ACCOUNT_NAME }}
@@ -76,7 +76,7 @@ jobs:
 
   azure-function:
     runs-on: ubuntu-latest
-    needs: deploy-arm-template
+    needs: deploy-azure-template
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
@@ -97,13 +97,13 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: ${{ needs.deploy-arm-template.outputs.functionAppName }}
+          app-name: ${{ needs.deploy-azure-template.outputs.functionAppName }}
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ needs.deploy-arm-template.outputs.publishProfile }}
+          publish-profile: ${{ needs.deploy-azure-template.outputs.publishProfile }}
 
   nuxt:
     runs-on: ubuntu-latest
-    needs: [deploy-arm-template]
+    needs: [deploy-azure-template]
     defaults:
       run:
         working-directory: resume
@@ -130,7 +130,7 @@ jobs:
 
       - name: Build
         run: |
-          export FUNCTION_BASE_URL=${{needs.deploy-arm-template.outputs.functionUrl}}
+          export FUNCTION_BASE_URL=${{needs.deploy-azure-template.outputs.functionUrl}}
           echo "Function: $FUNCTION_BASE_URL"
           npm run generate
           ls -l dist/*
@@ -147,14 +147,14 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             echo "Deploy to StorageAccount..."
-            az storage blob upload-batch --account-name ${{needs.deploy-arm-template.outputs.storageAccountName}} -d '$web' -s './resume/dist'
+            az storage blob upload-batch --account-name ${{needs.deploy-azure-template.outputs.storageAccountName}} -d '$web' -s './resume/dist'
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name ${{needs.deploy-arm-template.outputs.cdnProfileName}} --name ${{needs.deploy-arm-template.outputs.cdnEndpointName}} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }}
+            az cdn endpoint purge --content-paths  "/*" --profile-name ${{needs.deploy-azure-template.outputs.cdnProfileName}} --name ${{needs.deploy-azure-template.outputs.cdnEndpointName}} --resource-group ${{ env.AZURE_RESOURCEGROUP_NAME }}
 
 
       - name: Azure Logout
