@@ -4,7 +4,7 @@
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Resume Giorgio Lasala</span>
         <span class="d-none d-lg-block">
-          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="/profile.png" alt="" />
+          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="/images/profile.png" alt="" />
         </span>
       </a>
       <button

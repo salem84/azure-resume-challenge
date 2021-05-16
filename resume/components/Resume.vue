@@ -21,9 +21,9 @@
         <Interests />
       </section> -->
 
-      <!-- <section id="projects" class="resume-section p-3 p-lg-5 d-flex flex-column">
+      <section id="projects" class="resume-section p-3 p-lg-5 d-flex flex-column">
         <Projects />
-      </section> -->
+      </section>
     </div>
   </section>
 </template>
@@ -36,7 +36,7 @@ import Education from '../components/Sections/Education';
 import Experience from '../components/Sections/Experience';
 import Skills from '../components/Sections/Skills';
 // import Interests from '../components/Sections/Interests'
-// import Projects from '../components/Sections/Projects'
+import Projects from '../components/Sections/Projects';
 
 export default {
   components: {
@@ -46,7 +46,7 @@ export default {
     Education,
     Skills,
     // Interests,
-    // Projects,
+    Projects,
   },
   methods: {},
 };

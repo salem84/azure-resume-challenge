@@ -150,10 +150,6 @@ a:hover, a:focus, a:active {
   color: var(--color-text-primary);
 }
 
-.card-body, .card-title {
-  color: #868e96
-}
-
 /* COLOR STYLES */
 
 :root {

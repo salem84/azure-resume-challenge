@@ -17,7 +17,7 @@
     ],
     "city": "Rome, Italy",
     "phoneNumber": "",
-    "email": "giorgio.lasala[at]",
+    "email": "giorgio.lasala[at]gmail.com",
     "linkedin": "https://www.linkedin.com/in/giorgio-lasala/",
     "github": "https://github.com/salem84/",
     "myDescription": "Passionate web developer, making useful application using the latest technologies!"
@@ -103,7 +103,8 @@
       {
         "name": "AspNetCore.VersionInfo",
         "description": "A library to expose version information in JSON, HTML or Shields-style badge format",
-        "image": "/images/kelawar.jpg",
+        "image": "/images/NET_logo.png",
+        "customCssClass": "card-horizontal",
         "siteUrl": "https://github.com/salem84/AspNetCore.VersionInfo"
       }
     ]
