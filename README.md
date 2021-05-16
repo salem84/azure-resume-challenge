@@ -9,14 +9,14 @@ this is the repository for my first [A Cloud Guru Challenge](https://acloudguru.
 
 The site url is [www.giorgiolasala.space](https://www.giorgiolasala.space).
 
-Thanks to [Amen.pt](https://www.amen.pt/) for the free domain 🙏 used in this challenge!
+Thanks to all users in Discord "A Cloud Guru" channel and [Amen.pt](https://www.amen.pt/) for the free domain used in this challenge! 🙏🙏
 
 ## Infrastructure as Code
 In order to manage Azure infrastructure resources, I have used a template based on Bicep, that provides a transparent abstraction of Azure Resource Manager (ARM) template.
 
-In our specific use-case:
+In our use-case:
 
-![Diagram](https://lh4.googleusercontent.com/HNRvueROoYfDqYLZ1H04EbIWnjnmskyj3tg3blAO3IYNfEvfO4uApWDN3fOX-K3DGqPfu_IxXdpnBbw0Qu2kf9FXVqWGXFQfd3RO47kPDBGd_nMzvY_s46WJCFW3JYDu3wlfgsnR)
+![Diagram](img/diagram.png)
 
 Bicep template is composed of following resources:
 * _CosmosDb_ (Account, database, container)
@@ -30,7 +30,7 @@ A Bicep template could be easily deployed to an Azure Resource Group using Azure
 az deployment group create --resource-group AZURE_RESOURCEGROUP_NAME --template-file BICEP_TEMPLATE
 ```
 
-Unfortunately some configuration cannot be directly applied from Bicep/ARM deployment template, such as Static Website configuration.
+Unfortunately some configuration cannot be directly applied from _Bicep/ARM_ deployment template, such as _Static Website configuration_.
 But... 🚀 GitHub Workflows are the rescue!
 
 Moreover in order to create workflows completely indipendent from specific resource names, I have exported some output variables from Bicep template itself to be used directly in GitHub Workflow.
@@ -57,25 +57,56 @@ This button isn't necessary for Azure Resume challenge project, but however I wo
 
 ## GitHub Workflow
 Under _workflows_ folder there are 3 pipelines:
-a) [_bicep.yml_](.github/workflows/bicep.yml)
-b) [_ci.yml_](.github/workflows/bicep.yml)
-c) [_build_deploy.yml_](.github/workflows/bicep.yml)
+1. [_bicep.yml_](.github/workflows/bicep.yml):  to create ARM file for Azure Deploy. 
 
-### bicep.yml 
+    After install Bicep build tools
+    
+    ```yaml
+    - name: Install Bicep build
+      run: | 
+        curl -Lo bicepinstall https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+        chmod +x ./bicepinstall
+        sudo mv ./bicepinstall /usr/local/bin/bicep
+        bicep --help
+    ```
+    
+    this workflow generates a JSON file 
+    
+    ```yaml
+    - name: Run Bicep build
+      run: |
+        bicep build deploy/*.bicep
+    ```
 
+    and commits to repository using [Add & Commit](https://github.com/EndBug/add-and-commit) GitHub Action:
 
-### ci.yml
+    ```yaml
+    - uses: EndBug/add-and-commit@v7.0.0
+      with:
+        author_name: github-actions
+        author_email: 41898282+github-actions[bot]@users.noreply.github.com
+        message: 'Update Bicep-ARM template'
+        add: 'deploy/*.json'
+    ```
 
-### build_deploy.yml
-This workflow is composed of three jobs (splitted in two phases)
+2. [_ci.yml_](.github/workflows/bicep.yml): to lint Typescript source files
+
+    ```yaml
+     - name: Run linter 👀
+       run: npm run lint
+    ```
+
+3. [_build_deploy.yml_](.github/workflows/bicep.yml): manual workflow to deploy function and site.  
+
+Last workflow is composed of _three_ jobs, splitted in _two_ phases
 
 <IMAGE_GH>
 
 - Azure Infrastructure
-    1) Deploy Azure Template job
+    - Deploy Azure Template job
 - Azure Code
-    2) Azure Function job
-    3) Nuxt job
+    - Azure Function job
+    - Nuxt job
 
 
 
@@ -92,7 +123,8 @@ Moreover I have attached _Application Insights_ for logging and monitoring:
 ## Resume Template
 
 Resume template is based on beautiful resume NuxtJs code developed by [Ivan Greve](https://github.com/ivangreve/nuxt-resume) and [StartBootstrap Theme](https://github.com/startbootstrap/startbootstrap-resume/).
-I have developed a custom Vue component ([source](resume/components/Counter.vue)) in order to do an HTTP request to Azure Function.
+
+I developed a custom Vue component ([source](resume/components/Counter.vue)) in order to do an HTTP request to Azure Function and show a Toast notification using [@nuxtjs/toast](https://www.npmjs.com/package/@nuxtjs/toast) plugin.
 
 ## Conclusion
 
@@ -111,8 +143,4 @@ During development of all services I have encountered some challenging parts:
 * _Testing GitHub pipeline_: to be sure it works correctly, all changes must be committed; I have read about [Act](https://github.com/nektos/act) project, but I haven't success to start it locally... surely I will investigate about this choice.
 * _CDN and domain configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response?). Also CDN TLS configuration is quite confused to troubleshoot.
 
-### Thanks
-
-
-All users in Discord "A Cloud Guru" channel for suggestion and ideas!
 
