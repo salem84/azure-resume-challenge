@@ -20,7 +20,7 @@
     "email": "giorgio.lasala[at]gmail.com",
     "linkedin": "https://www.linkedin.com/in/giorgio-lasala/",
     "github": "https://github.com/salem84/",
-    "myDescription": "Passionate web developer, making useful application using the latest technologies!"
+    "myDescription": "Passionate solution architect, making useful application using the latest technologies!"
   },
   "educationDegrees": {
     "title": "Education 📕",
@@ -43,16 +43,15 @@
     "title": "Work Expecience 🔨",
     "works": [
       {
-        "position": "R&D Software Engineer",
-        "companie": "Elsag Datamat",
+        "position": "Solution Architect",
+        "companie": "Engineering",
         "responsabilities": [
-          "Technical Designer and Java Developer in Italian and European research",
-          "projects such as 'Multicast Multimedia Mobile Services (M3CAST)' to provide",
-          "unified and convergent services over DVB / UMTS / WiFi networks and",
-          "FP7 Project 'Smart hoMes for ALL' (SM4ALL), in which I have designed and",
-          "developed the Orchestration Engine and Rule Engine components."
+          "Responsible for web ecommerce designing and maintaining.",
+          "Graphic design (Adobe Photoshop and Adobe Illustrator).",
+          "Technical support.",
+          "Improve business processes."
         ],
-        "startEndDate": "2008 - 2009"
+        "startEndDate": "March 2014 - October 2017"
       },
       {
         "position": "Software Engineer - IT Manager",
@@ -64,6 +63,18 @@
           "Improve business processes."
         ],
         "startEndDate": "March 2014 - October 2017"
+      },
+      {
+        "position": "R&D Software Engineer",
+        "companie": "Elsag Datamat",
+        "responsabilities": [
+          "Technical Designer and Java Developer in Italian and European research",
+          "projects such as 'Multicast Multimedia Mobile Services (M3CAST)' to provide",
+          "unified and convergent services over DVB / UMTS / WiFi networks and",
+          "FP7 Project 'Smart hoMes for ALL' (SM4ALL), in which I have designed and",
+          "developed the Orchestration Engine and Rule Engine components."
+        ],
+        "startEndDate": "2008 - 2009"
       }
     ]
   },
@@ -72,24 +83,32 @@
     "iconsTitle": "Programming Languages & Tools",
     "devIcons": [
       "devicon-csharp-plain",
-      "devicon-dot-net-original-wordmark",
-      "devicon-dot-net-plain",
-      "devicon-github-original",
+      "devicon-dot-net-plain-wordmark",
+      "devicon-dotnetcore-plain",
       "devicon-visualstudio-plain",
-      "devicon-javascript-plain",
-      "devicon-html5-plain-wordmark",
-      "devicon-css3-plain-wordmark",
       "devicon-git-plain",
-      "devicon-bootstrap-plain"
+      "devicon-github-original",
+      "devicon-docker-plain",
+      "devicon-kubernetes-plain",
+      "devicon-redhat-plain-wordmark",
+      "not-visible-devicon-javascript-plain",
+      "not-visible-devicon-html5-plain-wordmark",
+      "not-visible-devicon-css3-plain-wordmark",
+      "not-visible-devicon-bootstrap-plain"
     ],
-    "workflow": "Workflow",
-    "itemList": [
-      "Responsive Design & UX",
-      "Cross Browser Testing & Debugging",
-      "REST API building",
-      "Agile Development & Scrum",
-      "Team working",
-      "Design Patterns"
+    "certificationsTitle": "Certifications",
+    "certifications": [
+      "Microsoft Certified: Azure Fundamentals ⭐",
+      "Microsoft Certified: Azure Data Fundamentals ⭐",
+      "Microsoft Certified: Azure AI Fundamentals ⭐",
+      "Microsoft Certified: Azure AI Engineer Associate ⭐⭐",
+      "Microsoft Certified: Azure Developer Associate ⭐⭐",
+      "Microsoft Certified: DevOps Engineering Expert ⭐⭐⭐",
+      "Microsoft Certified: Azure Solutions Architect Expert ⭐⭐⭐",
+      "The Open Group Certified: TOGAF 9",
+      "ITIL 4 Foundation",
+      "PeopleCert: DevOps Foundation Certificate",
+      "Redhat Certified Specialist in OpenShift Application Development"
     ]
   },
   "interests": {
