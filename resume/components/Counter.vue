@@ -1,9 +1,9 @@
 <template>
   <div class="counter">
-    <template v-if="$fetchState.pending">
+    <!--<template v-if="$fetchState.pending">
       <span>{{ message }}</span>
     </template>
-    <!-- <template v-else>
+    <template v-else>
       <span>{{ users }}</span>
     </template> -->
   </div>
