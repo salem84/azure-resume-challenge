@@ -263,7 +263,7 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   }
 }
 
-resource cdnCustomDomain 'Microsoft.Cdn/profiles/customDomains@2020-09-01' = {
+resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
   name: '${cdnProfileName}/${endpointName}/wwwdomain'
   dependsOn: [
     cdnEndpoint
