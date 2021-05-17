@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.539.46024",
-      "templateHash": "17465775458574485466"
+      "templateHash": "14193110132007758410"
     }
   },
   "parameters": {
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "type": "Microsoft.Cdn/profiles/customDomains",
+      "type": "Microsoft.Cdn/profiles/endpoints/customDomains",
       "apiVersion": "2020-09-01",
       "name": "[format('{0}/{1}/wwwdomain', parameters('cdnProfileName'), parameters('endpointName'))]",
       "properties": {
