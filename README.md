@@ -53,7 +53,7 @@ Finally, it's possible to link Json ARM file to a Deployment button such as:
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsalem84%2Fazure-resume-challenge%2Fmaster%2Fdeploy%2Fmain.json)
 
-This button isn't necessary for Azure Resume challenge project, but however I would like sharing this 'pork-around' 🐷!
+This button is not needed for Azure Resume challenge project, but however I would like sharing this 'pork-around' 🐷!
 
 ## GitHub Workflow
 Under _workflows_ folder there are 3 pipelines:
@@ -141,6 +141,6 @@ Surely the most important "lesson learned" was the opportunity to orchestrate al
 ### What was the hardest part?
 During development of all services I have encountered some challenging parts:
 * _Testing GitHub pipeline_: to be sure it works correctly, all changes must be committed; I have read about [Act](https://github.com/nektos/act) project, but I haven't success to start it locally... surely I will investigate about this choice.
-* _CDN and domain configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response?). Also CDN TLS configuration is quite confused to troubleshoot.
+* _CDN and domain configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response? purge works?). Also CDN TLS configuration is quite confused to troubleshoot. Finally, I switched from Akamai to Microsoft CDN to support purge all easily
 
 
