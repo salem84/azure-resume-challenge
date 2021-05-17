@@ -9,7 +9,7 @@ param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('storage${appName}')
 param cdnProfileName string = toLower('cdnProfile-${appName}')
 param endpointName string = toLower('resume${appName}')
-param endpointCompleteName string = concat(cdnProfileName, '/', endpointName)
+// param endpointCompleteName string = concat(cdnProfileName, '/', endpointName)
 
 param deploymentScriptTimestamp string = utcNow()
 param indexDocument string = 'index.html'
@@ -227,13 +227,13 @@ resource cdnProfile 'Microsoft.Cdn/profiles@2020-09-01' = {
 
 var storageAccountHostNameWeb = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 
-resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
+resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   location: location
   dependsOn: [
     storageAccount
     cdnProfile
   ]
-  name: endpointCompleteName
+  name: '${cdnProfileName}/${endpointName}'
   properties: {
     originHostHeader: storageAccountHostNameWeb
     isHttpAllowed: true
@@ -263,12 +263,22 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   }
 }
 
+resource cdnCustomDomain 'Microsoft.Cdn/profiles/customDomains@2020-09-01' = {
+  name: '${cdnProfileName}/${endpointName}/wwwdomain'
+  dependsOn: [
+    cdnEndpoint
+  ]
+  properties: {
+    hostName: 'www.giorgiolasala.space'
+  }
+}
+
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
 output storageAccountName string = storageAccount.name
 output functionAppName string = functionApp.name
 output functionUrl string = concat('https://', functionApp.properties.defaultHostName)
 output cdnProfileName string = cdnProfile.name
-output cdnEndpointHostName string = endpoint.properties.hostName
-output originHostHeader string = endpoint.properties.originHostHeader
+output cdnEndpointHostName string = cdnEndpoint.properties.hostName
+output originHostHeader string = cdnEndpoint.properties.originHostHeader
 output cdnEndpointName string = endpointName
