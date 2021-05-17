@@ -122,7 +122,7 @@
       {
         "name": "AspNetCore.VersionInfo",
         "description": "A library to expose version information in JSON, HTML or Shields-style badge format",
-        "image": "/images/NET_logo.png",
+        "image": "/images/NET_Logo.png",
         "customCssClass": "card-horizontal",
         "siteUrl": "https://github.com/salem84/AspNetCore.VersionInfo"
       }
