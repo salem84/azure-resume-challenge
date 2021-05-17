@@ -1,15 +1,19 @@
-param appName string = uniqueString(resourceGroup().id)
+param rndSuffix string = uniqueString(resourceGroup().id)
+param appName string = 'resume${rndSuffix}'
+
+// Database settings
 param accountName string = toLower('cosmos-${appName}')
-param location string = resourceGroup().location
 param databaseName string = toLower('stats')
 param containerName string = toLower('counters')
 
-param functionAppName string = toLower('resume-functions-${appName}')
+// Function settings
+param functionAppName string = toLower('func-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
-param storageAccountName string = toLower('storage${appName}')
-param cdnProfileName string = toLower('cdnProfile-${appName}')
-param endpointName string = toLower('resume${appName}')
-// param endpointCompleteName string = concat(cdnProfileName, '/', endpointName)
+param storageAccountName string = toLower('st${appName}')
+param cdnProfileName string = toLower('cdnp-${appName}')
+param cdnEndpointName string = toLower('cdne-${appName}')
+param appInsightsName string = toLower('appi-${appName}')
+// param endpointCompleteName string = concat(cdnProfileName, '/', cdnEndpointName)
 
 param deploymentScriptTimestamp string = utcNow()
 param indexDocument string = 'index.html'
@@ -17,8 +21,10 @@ param errorDocument404Path string = 'error.html'
 
 var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
 
+param location string = resourceGroup().location
+
 resource appInsights 'Microsoft.Insights/components@2018-05-01-preview' = {
-  name: toLower('appinsights-${appName}')
+  name: appInsightsName
   location: location
   kind: 'web'
   properties: {
@@ -166,62 +172,11 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-// resource function 'Microsoft.Web/sites/functions@2020-06-01' = {
-//   name: '${functionAppName}/counter'
-// }
-
-// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//   name: 'DeploymentScript'
-//   location: location
-// }
-
-// resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-//   scope: storageAccount
-//   name: guid(resourceGroup().id, storageAccountContributorRoleDefinitionId)
-//   properties: {
-//     roleDefinitionId: storageAccountContributorRoleDefinitionId
-//     principalId: managedIdentity.properties.principalId
-//   }
-// }
-
-// resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-//   name: 'deploymentScript'
-//   location: location
-//   kind: 'AzurePowerShell'
-//   identity: {
-//     type: 'UserAssigned'
-//     userAssignedIdentities: {
-//       '${managedIdentity.id}': {}
-//     }
-//   }
-//   dependsOn: [
-//     roleAssignment
-//     storageAccount
-//   ]
-//   properties: {
-//     azPowerShellVersion: '3.0'
-//     scriptContent: '''
-// param(
-//     [string] $ResourceGroupName,
-//     [string] $StorageAccountName,
-//     [string] $IndexDocument,
-//     [string] $ErrorDocument404Path)
-// $ErrorActionPreference = 'Stop'
-// $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -AccountName $StorageAccountName
-// $ctx = $storageAccount.Context
-// Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -ErrorDocument404Path $ErrorDocument404Path
-// '''
-//     forceUpdateTag: deploymentScriptTimestamp
-//     retentionInterval: 'PT4H'
-//     arguments: '-ResourceGroupName ${resourceGroup().name} -StorageAccountName ${accountName} -IndexDocument ${indexDocument} -ErrorDocument404Path ${errorDocument404Path}'
-//   }
-// }
-
 resource cdnProfile 'Microsoft.Cdn/profiles@2020-09-01' = {
   location: location
   name: cdnProfileName
   sku: {
-    name: 'Standard_Akamai'
+    name: 'Standard_Microsoft'
   }
 }
 
@@ -233,7 +188,7 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
     storageAccount
     cdnProfile
   ]
-  name: '${cdnProfileName}/${endpointName}'
+  name: '${cdnProfileName}/${cdnEndpointName}'
   properties: {
     originHostHeader: storageAccountHostNameWeb
     isHttpAllowed: true
@@ -265,7 +220,7 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
 
 // to avoid domain conflicts
 // resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
-//   name: '${cdnProfileName}/${endpointName}/wwwdomain'
+//   name: '${cdnProfileName}/${cdnEndpointName}/wwwdomain'
 //   dependsOn: [
 //     cdnEndpoint
 //   ]
@@ -282,4 +237,4 @@ output functionUrl string = concat('https://', functionApp.properties.defaultHos
 output cdnProfileName string = cdnProfile.name
 output cdnEndpointHostName string = cdnEndpoint.properties.hostName
 output originHostHeader string = cdnEndpoint.properties.originHostHeader
-output cdnEndpointName string = endpointName
+output cdnEndpointName string = cdnEndpointName
