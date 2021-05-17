@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.539.46024",
-      "templateHash": "14193110132007758410"
+      "templateHash": "8762077324423019816"
     }
   },
   "parameters": {
@@ -268,17 +268,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Cdn/profiles', parameters('cdnProfileName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Cdn/profiles/endpoints/customDomains",
-      "apiVersion": "2020-09-01",
-      "name": "[format('{0}/{1}/wwwdomain', parameters('cdnProfileName'), parameters('endpointName'))]",
-      "properties": {
-        "hostName": "www.giorgiolasala.space"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])]"
       ]
     }
   ],
