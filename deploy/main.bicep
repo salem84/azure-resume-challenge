@@ -263,15 +263,16 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   }
 }
 
-resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
-  name: '${cdnProfileName}/${endpointName}/wwwdomain'
-  dependsOn: [
-    cdnEndpoint
-  ]
-  properties: {
-    hostName: 'www.giorgiolasala.space'
-  }
-}
+// to avoid domain conflicts
+// resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
+//   name: '${cdnProfileName}/${endpointName}/wwwdomain'
+//   dependsOn: [
+//     cdnEndpoint
+//   ]
+//   properties: {
+//     hostName: 'www.giorgiolasala.space'
+//   }
+// }
 
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
