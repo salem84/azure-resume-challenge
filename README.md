@@ -101,14 +101,13 @@ Under _workflows_ folder there are 3 pipelines:
 
 Last workflow is composed of _three_ jobs, splitted in _two_ phases
 
-<IMAGE_GH>
+![BuildWorkflow](img/build_workflow.png)
 
 - Azure Infrastructure
     - Deploy Azure Template job
 - Azure Code
     - Azure Function job
     - Nuxt job
-
 
 
 ## Azure Function
