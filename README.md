@@ -7,9 +7,9 @@ Hi guys 👋👋👋
 
 this is the repository for my first [A Cloud Guru Challenge](https://acloudguru.com/blog/engineering/cloudguruchallenge-your-resume-in-azure) to create a web resume using Azure infrastructure!
 
-The site url is [www.giorgiolasala.space](https://www.giorgiolasala.space).
+The site url is [resume.giorgiolasala.space](https://resume.giorgiolasala.space).
 
-Thanks to all users in Discord "A Cloud Guru" channel and [Amen.pt](https://www.amen.pt/) for the free domain used in this challenge! 🙏🙏
+Thanks to all users in Discord *"A Cloud Guru"* channel and [Amen.pt](https://www.amen.pt/) for the free domain used in this challenge! 🙏🙏
 
 ## Infrastructure as Code
 In order to manage Azure infrastructure resources, I have used a template based on Bicep, that provides a transparent abstraction of Azure Resource Manager (ARM) template.
@@ -38,7 +38,8 @@ Moreover in order to create workflows completely indipendent from specific resou
 Indeed, at the begininnig of Bicep template, resource names are "randomized", generating a deterministic unique string based on Resource Group name:
 
 ```
-param appName string = uniqueString(resourceGroup().id)
+param rndSuffix string = uniqueString(resourceGroup().id)
+param appName string = 'resume${rndSuffix}'
 ```
 
 and at the end of file, there are all exported values used during deployment phase; in particular I have:
@@ -57,7 +58,7 @@ This button is not needed for Azure Resume challenge project, but however I woul
 
 ## GitHub Workflow
 Under _workflows_ folder there are 3 pipelines:
-1. [_bicep.yml_](.github/workflows/bicep.yml):  to create ARM file for Azure Deploy. 
+1. [*bicep.yml*](.github/workflows/bicep.yml):  to create ARM file for Azure Deploy. 
 
     After install Bicep build tools
     
@@ -89,14 +90,14 @@ Under _workflows_ folder there are 3 pipelines:
         add: 'deploy/*.json'
     ```
 
-2. [_ci.yml_](.github/workflows/bicep.yml): to lint Typescript source files
+2. [*ci.yml*](.github/workflows/bicep.yml): to lint Typescript source files
 
     ```yaml
      - name: Run linter 👀
        run: npm run lint
     ```
 
-3. [_build_deploy.yml_](.github/workflows/bicep.yml): manual workflow to deploy function and site.  
+3. [*build_deploy.yml*](.github/workflows/bicep.yml): manual workflow to deploy function and site.  
 
 Last workflow is composed of _three_ jobs, splitted in _two_ phases
 
@@ -128,7 +129,7 @@ I developed a custom Vue component ([source](resume/components/Counter.vue)) in 
 
 ## Conclusion
 
-### What are your biggest takeaways
+### What are your biggest takeaways?
 This challenge was the opportunity to start with new technologies and to go deeper with others.
 It was the first time I have used Bicep template and NuxtJs framework, two very interesting technologies and at the same time I have played with CDN and Azure Static WebSite!
 
@@ -144,3 +145,8 @@ During development of all services I have encountered some challenging parts:
 * _CDN and domain configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response? purge works?). Also CDN TLS configuration is quite confused to troubleshoot. Finally, I switched from Akamai to Microsoft CDN to support purge all easily
 
 
+### Links
+- [Challenge rules](https://acloudguru.com/blog/engineering/cloudguruchallenge-your-resume-in-azure)
+- [DNS Propagation Checker](https://www.whatsmydns.net/)
+- [Azure Cloud Adoption Framework - Naming Convention](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
+- [Free Domain Amen.pt](https://www.amen.pt)
