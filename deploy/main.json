@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.539.46024",
-      "templateHash": "16809899346654531019"
+      "templateHash": "17465775458574485466"
     }
   },
   "parameters": {
@@ -48,10 +48,6 @@
     "endpointName": {
       "type": "string",
       "defaultValue": "[toLower(format('resume{0}', parameters('appName')))]"
-    },
-    "endpointCompleteName": {
-      "type": "string",
-      "defaultValue": "[concat(parameters('cdnProfileName'), '/', parameters('endpointName'))]"
     },
     "deploymentScriptTimestamp": {
       "type": "string",
@@ -240,7 +236,7 @@
     {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2020-09-01",
-      "name": "[parameters('endpointCompleteName')]",
+      "name": "[format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName'))]",
       "location": "[parameters('location')]",
       "properties": {
         "originHostHeader": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.web, 'https://', ''), '/', '')]",
@@ -273,6 +269,17 @@
         "[resourceId('Microsoft.Cdn/profiles', parameters('cdnProfileName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
       ]
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/customDomains",
+      "apiVersion": "2020-09-01",
+      "name": "[format('{0}/{1}/wwwdomain', parameters('cdnProfileName'), parameters('endpointName'))]",
+      "properties": {
+        "hostName": "www.giorgiolasala.space"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])]"
+      ]
     }
   ],
   "outputs": {
@@ -294,11 +301,11 @@
     },
     "cdnEndpointHostName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointCompleteName'), '/')[0], split(parameters('endpointCompleteName'), '/')[1])).hostName]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])).hostName]"
     },
     "originHostHeader": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(parameters('endpointCompleteName'), '/')[0], split(parameters('endpointCompleteName'), '/')[1])).originHostHeader]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])).originHostHeader]"
     },
     "cdnEndpointName": {
       "type": "string",
