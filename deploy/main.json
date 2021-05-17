@@ -5,21 +5,21 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.539.46024",
-      "templateHash": "8762077324423019816"
+      "templateHash": "9568545197530489445"
     }
   },
   "parameters": {
-    "appName": {
+    "rndSuffix": {
       "type": "string",
       "defaultValue": "[uniqueString(resourceGroup().id)]"
+    },
+    "appName": {
+      "type": "string",
+      "defaultValue": "[format('resume{0}', parameters('rndSuffix'))]"
     },
     "accountName": {
       "type": "string",
       "defaultValue": "[toLower(format('cosmos-{0}', parameters('appName')))]"
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]"
     },
     "databaseName": {
       "type": "string",
@@ -31,7 +31,7 @@
     },
     "functionAppName": {
       "type": "string",
-      "defaultValue": "[toLower(format('resume-functions-{0}', parameters('appName')))]"
+      "defaultValue": "[toLower(format('func-{0}', parameters('appName')))]"
     },
     "appServicePlanName": {
       "type": "string",
@@ -39,15 +39,19 @@
     },
     "storageAccountName": {
       "type": "string",
-      "defaultValue": "[toLower(format('storage{0}', parameters('appName')))]"
+      "defaultValue": "[toLower(format('st{0}', parameters('appName')))]"
     },
     "cdnProfileName": {
       "type": "string",
-      "defaultValue": "[toLower(format('cdnProfile-{0}', parameters('appName')))]"
+      "defaultValue": "[toLower(format('cdnp-{0}', parameters('appName')))]"
     },
-    "endpointName": {
+    "cdnEndpointName": {
       "type": "string",
-      "defaultValue": "[toLower(format('resume{0}', parameters('appName')))]"
+      "defaultValue": "[toLower(format('cdne-{0}', parameters('appName')))]"
+    },
+    "appInsightsName": {
+      "type": "string",
+      "defaultValue": "[toLower(format('appi-{0}', parameters('appName')))]"
     },
     "deploymentScriptTimestamp": {
       "type": "string",
@@ -60,6 +64,10 @@
     "errorDocument404Path": {
       "type": "string",
       "defaultValue": "error.html"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
     }
   },
   "functions": [],
@@ -70,7 +78,7 @@
     {
       "type": "Microsoft.Insights/components",
       "apiVersion": "2018-05-01-preview",
-      "name": "[toLower(format('appinsights-{0}', parameters('appName')))]",
+      "name": "[parameters('appInsightsName')]",
       "location": "[parameters('location')]",
       "kind": "web",
       "properties": {
@@ -195,11 +203,11 @@
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(resourceId('Microsoft.Insights/components', toLower(format('appinsights-{0}', parameters('appName'))))).InstrumentationKey]"
+              "value": "[reference(resourceId('Microsoft.Insights/components', parameters('appInsightsName'))).InstrumentationKey]"
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[format('InstrumentationKey={0}', reference(resourceId('Microsoft.Insights/components', toLower(format('appinsights-{0}', parameters('appName'))))).InstrumentationKey)]"
+              "value": "[format('InstrumentationKey={0}', reference(resourceId('Microsoft.Insights/components', parameters('appInsightsName'))).InstrumentationKey)]"
             },
             {
               "name": "FUNCTIONS_WORKER_RUNTIME",
@@ -218,7 +226,7 @@
         "httpsOnly": true
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Insights/components', toLower(format('appinsights-{0}', parameters('appName'))))]",
+        "[resourceId('Microsoft.Insights/components', parameters('appInsightsName'))]",
         "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]",
         "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
@@ -230,13 +238,13 @@
       "name": "[parameters('cdnProfileName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "Standard_Akamai"
+        "name": "Standard_Microsoft"
       }
     },
     {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2020-09-01",
-      "name": "[format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName'))]",
+      "name": "[format('{0}/{1}', parameters('cdnProfileName'), parameters('cdnEndpointName'))]",
       "location": "[parameters('location')]",
       "properties": {
         "originHostHeader": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.web, 'https://', ''), '/', '')]",
@@ -290,15 +298,15 @@
     },
     "cdnEndpointHostName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])).hostName]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('cdnEndpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('cdnEndpointName')), '/')[1])).hostName]"
     },
     "originHostHeader": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('endpointName')), '/')[1])).originHostHeader]"
+      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', split(format('{0}/{1}', parameters('cdnProfileName'), parameters('cdnEndpointName')), '/')[0], split(format('{0}/{1}', parameters('cdnProfileName'), parameters('cdnEndpointName')), '/')[1])).originHostHeader]"
     },
     "cdnEndpointName": {
       "type": "string",
-      "value": "[parameters('endpointName')]"
+      "value": "[parameters('cdnEndpointName')]"
     }
   }
 }
