@@ -11,7 +11,7 @@ param functionAppName string = toLower('func-${appName}')
 param appServicePlanName string = toLower('plan-${appName}')
 param storageAccountName string = toLower('st${appName}')
 param cdnProfileName string = toLower('cdnp-${appName}')
-param cdnEndpointName string = toLower('cdne-${appName}')
+param cdnEndpointName string = toLower('cdne-resumegiorgiolasala')
 param appInsightsName string = toLower('appi-${appName}')
 // param endpointCompleteName string = concat(cdnProfileName, '/', cdnEndpointName)
 
@@ -219,15 +219,15 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
 }
 
 // to avoid domain conflicts
-// resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
-//   name: '${cdnProfileName}/${cdnEndpointName}/wwwdomain'
-//   dependsOn: [
-//     cdnEndpoint
-//   ]
-//   properties: {
-//     hostName: 'www.giorgiolasala.space'
-//   }
-// }
+resource cdnCustomDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = {
+  name: '${cdnProfileName}/${cdnEndpointName}/wwwdomain'
+  dependsOn: [
+    cdnEndpoint
+  ]
+  properties: {
+    hostName: 'resume.giorgiolasala.space'
+  }
+}
 
 // output scriptLogs string = reference('${deploymentScript.id}/logs/default', deploymentScript.apiVersion, 'Full').properties.log
 // output staticWebsiteHostName string = replace(replace(storageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
