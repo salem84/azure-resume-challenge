@@ -46,35 +46,34 @@
         "position": "Solution Architect",
         "companie": "Engineering",
         "responsabilities": [
-          "Responsible for web ecommerce designing and maintaining.",
-          "Graphic design (Adobe Photoshop and Adobe Illustrator).",
-          "Technical support.",
-          "Improve business processes."
+          "Design and implementation of scalable, reliable and cost-effective architectures on premise and Cloud Azure.",
+          "More than 10 years in .NET development using different platforms and technologies",
+          "Analyze technical requirements in order to define suitable enterprise solutions",
+          "Set up Proof of Concepts (PoCs) to demonstrate product capabilities",
+          "Manage projects to delivery, coordinating activities and people",
+          "Training on the job and slides presentation for co-workers and customers"
         ],
-        "startEndDate": "March 2014 - October 2017"
+        "startEndDate": "May 2015 - Now"
       },
       {
         "position": "Software Engineer - IT Manager",
         "companie": "Infoservice",
         "responsabilities": [
-          "Responsible for web ecommerce designing and maintaining.",
-          "Graphic design (Adobe Photoshop and Adobe Illustrator).",
-          "Technical support.",
-          "Improve business processes."
+          "Primary responsibilities include design and development of enterprise applications with Microsoft technologies including .NET Framework, Azure and SharePoint",
+          "I have a good management experience of small/medium teams",
+          "During the last years I have worked almost exclusively on Portal Technologies, Content and Enterprise Management Systems, responsible over the entire life cycle, providing innovative solutions."
         ],
-        "startEndDate": "March 2014 - October 2017"
+        "startEndDate": "November 2009 - May 2015"
       },
       {
         "position": "R&D Software Engineer",
         "companie": "Elsag Datamat",
         "responsabilities": [
-          "Technical Designer and Java Developer in Italian and European research",
-          "projects such as 'Multicast Multimedia Mobile Services (M3CAST)' to provide",
-          "unified and convergent services over DVB / UMTS / WiFi networks and",
-          "FP7 Project 'Smart hoMes for ALL' (SM4ALL), in which I have designed and",
-          "developed the Orchestration Engine and Rule Engine components."
+          "Technical Designer and Java Developer in Italian and European research projects",
+          "Italian Project 'Multicast Multimedia Mobile Services (M3CAST)' to provide unified and convergent services over DVB / UMTS / WiFi networks",
+          "FP7 European Project 'Smart hoMes for ALL' (SM4ALL), in which I have designed and developed the Orchestration Engine and Rule Engine components"
         ],
-        "startEndDate": "2008 - 2009"
+        "startEndDate": "July 2008 - November 2009"
       }
     ]
   },
