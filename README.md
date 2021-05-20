@@ -141,8 +141,8 @@ Surely the most important "lesson learned" was the opportunity to orchestrate al
 ### What was the hardest part?
 During development of all services I have encountered some challenging parts:
 * _Testing GitHub pipeline_: to be sure it works correctly, all changes must be committed; I have read about [Act](https://github.com/nektos/act) project, but I haven't success to start it locally... surely I will investigate about this choice.
-* _CDN and domain configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response? purge works?). Also CDN TLS configuration is quite confused to troubleshoot. Finally, I switched from Akamai to Microsoft CDN to support purge all easily
-
+* _CDN configuration_: I have never used CDN, so I have found some issues to check if it's correctly works (why obtain 404 response? purge works?). Also CDN TLS configuration is quite confused to troubleshoot. Finally, I switched from Akamai to Microsoft CDN to support purge all easily because of Akamai does not support wildcard purge.
+* _Domain configuration_: DNS configuration (in my specific case) must be done manually on Register control panel, so initially I have created it (with a static endpoint name) and then I run ARM pipeline to create Azure resources.
 
 ### Links
 - [Challenge rules](https://acloudguru.com/blog/engineering/cloudguruchallenge-your-resume-in-azure)
