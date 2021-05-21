@@ -143,7 +143,7 @@ a {
 }
 
 a:hover, a:focus, a:active {
-  color: var(--color-primary-hover);
+  color: var(--color-secondary-hover);
 }
 
 .vue-typer .custom.char {
@@ -169,7 +169,7 @@ a:hover, a:focus, a:active {
 
   --color: #ebf4f1;
   --color-primary: #0a0d0f;
-  --color-secondary: #000000;
+  --color-secondary: #3b833b;
   --color-primary-hover: #020405;
   --color-text-primary: #ffffff;
   --color-text-secondary: #e2e2e2;
@@ -183,7 +183,4 @@ body {
   background-color: var(--bg);
   color: var(--color);
   transition: background-color .3s;
-}
-a {
-  color: var(--color-primary)
 }
