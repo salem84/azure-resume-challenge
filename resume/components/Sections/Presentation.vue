@@ -37,6 +37,14 @@
           </span>
         </a>
       </li> -->
+      <li class="list-inline-item">
+        <a href="$t('personalInfo.blog')">
+          <span class="fa-stack fa-lg">
+            <i class="fas fa-circle fa-stack-2x"></i>
+            <i class="fas fa-blog fa-stack-1x fa-inverse"></i>
+          </span>
+        </a>
+      </li>
 
       <li class="list-inline-item">
         <a target="blank" :href="$t('personalInfo.linkedin')">

@@ -20,6 +20,7 @@
     "email": "giorgio.lasala[at]gmail.com",
     "linkedin": "https://www.linkedin.com/in/giorgio-lasala/",
     "github": "https://github.com/salem84/",
+    "blog": "https://giorgiolasala.space",
     "myDescription": "Passionate solution architect, making useful application using the latest technologies!"
   },
   "educationDegrees": {
@@ -28,13 +29,13 @@
       {
         "collage": "University of Rome 'La Sapienza'",
         "name": "Master Degree in Telecommunication Engineering",
-        "itemList": ["Computer Science"],
+        "itemList": [""],
         "startEndDate": "Sep. 2002 - Sep. 2005"
       },
       {
         "collage": "University of Rome 'La Sapienza'",
         "name": "Bachelor Degree in Telecommunication Engineering",
-        "itemList": ["Computer Science"],
+        "itemList": [""],
         "startEndDate": "Sep. 2005 - May 2008"
       }
     ]
